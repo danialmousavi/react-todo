@@ -1,4 +1,3 @@
-import style from "../style/style.css";
 const Home = () => {
     
   return (
@@ -6,10 +5,10 @@ const Home = () => {
       <div className="container">
         <div className="row">
           <div className="d-flex justify-content-center mt-5">
-            <h1 className="text-white">welcome to todos page</h1>
+            <h1 className="">welcome to todos page</h1>
           </div>
           <div className="d-flex justify-content-center ">
-            <p className="text-white col-md-5 text-center">
+            <p className=" col-md-5 text-center">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam
               veniam unde tempora vitae aliquam deserunt exercitationem magni at
               placeat dicta? Beatae quia, sapiente assumenda dignissimos dicta

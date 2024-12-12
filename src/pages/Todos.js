@@ -1,30 +1,43 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import TodoContext from "../context/TodoContext"
-import axios from 'axios';
+import FilterTodos from "../components/todo/filterTodos"
+import CreateTodo from "../components/todo/CreateTodo"
+
 const Todos=()=>{
-   const todoContext=useContext(TodoContext)
+   const {todos,getTodos,error}=useContext(TodoContext)
+   const [loading,setLoading]=useState(true)
+
    useEffect(()=>{
-    // fetch('https://jsonplaceholder.typicode.com/todos')
-    // .then(res=>res.json())
-    // .then(data=>{
-    //  todoContext.dispatch({type:'SET_TODOS',payload:data})
-    // })
-   async function fetchData(){
-      try {
-        const res= await axios.get("https://jsonplaceholder.typicode.com/todos");
-        console.log(res.data)
-      } catch (err) {
-        console.log(err.message);
-        
+      const fetchData= async()=>{
+       await getTodos()
+    setLoading(false);
       }
-    }
-    fetchData()
-   },[])
+      fetchData()
+   },[getTodos])
+   
     return(
-        <>
-        {/* <h1>todos page {todoContext}</h1> */}
-     
-        </>
+      <div className="container">
+        <div className="row g-3">
+        <CreateTodo/>
+          <hr />
+        <FilterTodos/>
+        {error&&<div>{error}</div>}
+        {loading&&<div className="col-md-12 text-center"><div className="spinner-border mt-5"></div></div>}
+        {todos&& todos.map(todo=>(
+          <div className=" col-sm-6 col-md-4" key={todo.id}>
+            <div className={todo.completed?"card m-2 bg-light":"card m-2"}>
+              <div className="card-body d-flex justify-content-between align-items-center ">
+                <div>{todo.completed?<del>{todo.title}</del>:<span>{todo.title}</span>}</div>
+                <div className="d-flex align-items-center">
+                  {todo.completed?<i className="bi bi-check-all fs-4"></i>:<i className="bi bi-check fs-4"></i>}
+                <i className="bi bi-trash-fill fs-6"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        </div>
+      </div>
     )
 }
 export default Todos
