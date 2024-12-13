@@ -2,7 +2,7 @@ import { useCallback, useReducer } from "react";
 import TodoContext from "./TodoContext";
 import todoReducer from "./TodoReducer";
 import axios from "axios";
-
+import Swal from "sweetalert2";
 const TodoProvider = ({ children }) => {
   const initialState={
     todos:[],
@@ -33,8 +33,32 @@ const TodoProvider = ({ children }) => {
         dispatch({type:'FILTER_TODOS',payload:[]})
       }
     }
+    const addTodo=async(title)=>{
+      try {
+        const res= await axios.post('https://jsonplaceholder.typicode.com/todos',{
+          title:title,
+          completed:false
+        });
+        console.log(res);
+        
+        dispatch({type:'ADD_TODO',payload:res.data})
+        dispatch({type:'SET_ERROR',payload:null})
+        Swal.fire({
+          title:"Task added",
+          icon:"success",
+          showCancelButton:false,
+          timerProgressBar:true,
+          timer:3000,
+          toast:true,
+          position:'top'
+        })        
+      } catch (err) {
+        dispatch({type:'SET_ERROR',payload:err.message})
+        dispatch({type:'FILTER_TODOS',payload:[]})
+      }
+    }
   return (
-    <TodoContext.Provider value={{...state,getTodos,filterTodos}}>
+    <TodoContext.Provider value={{...state,getTodos,filterTodos,addTodo}}>
       {children}
     </TodoContext.Provider>
   );
