@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react"
 import TodoContext from "../context/TodoContext"
 import FilterTodos from "../components/todo/filterTodos"
 import CreateTodo from "../components/todo/CreateTodo"
+import UpdateTodo from "../components/todo/UpdateTodo"
+import DeleteTodo from "../components/todo/DeleteTodo"
 
 const Todos=()=>{
    const {todos,getTodos,error}=useContext(TodoContext)
@@ -29,8 +31,8 @@ const Todos=()=>{
               <div className="card-body d-flex justify-content-between align-items-center ">
                 <div>{todo.completed?<del>{todo.title}</del>:<span>{todo.title}</span>}</div>
                 <div className="d-flex align-items-center">
-                  {todo.completed?<i className="bi bi-check-all fs-4"></i>:<i className="bi bi-check fs-4"></i>}
-                <i className="bi bi-trash-fill fs-6"></i>
+                  <UpdateTodo todo={todo}/>
+                  <DeleteTodo todoId={todo.id}/>
                 </div>
               </div>
             </div>

@@ -57,8 +57,51 @@ const TodoProvider = ({ children }) => {
         dispatch({type:'FILTER_TODOS',payload:[]})
       }
     }
+    const updateTodo=async(todo)=>{
+      try {
+        const res= await axios.put(`https://jsonplaceholder.typicode.com/todos/${todo.id}`,{
+          title:todo.title,
+          completed:!todo.completed
+        });
+        console.log(res.data);
+        
+        dispatch({type:'UPDATE_TODO',payload:res.data})
+        dispatch({type:'SET_ERROR',payload:null})
+        Swal.fire({
+          title:"Task updated",
+          icon:"success",
+          showCancelButton:false,
+          timerProgressBar:true,
+          timer:3000,
+          toast:true,
+          position:'top'
+        })        
+      } catch (err) {
+        dispatch({type:'SET_ERROR',payload:err.message})
+        dispatch({type:'FILTER_TODOS',payload:[]})
+      }
+    }
+    const deleteTodo=async(todoId)=>{
+      try {
+       await axios.delete(`https://jsonplaceholder.typicode.com/todos/${todoId}`);
+        dispatch({type:'DELETE_TODO',payload:todoId})
+        dispatch({type:'SET_ERROR',payload:null})
+        Swal.fire({
+          title:"Task deleted",
+          icon:"success",
+          showCancelButton:false,
+          timerProgressBar:true,
+          timer:3000,
+          toast:true,
+          position:'top'
+        })        
+      } catch (err) {
+        dispatch({type:'SET_ERROR',payload:err.message})
+        dispatch({type:'FILTER_TODOS',payload:[]})
+      }
+    }
   return (
-    <TodoContext.Provider value={{...state,getTodos,filterTodos,addTodo}}>
+    <TodoContext.Provider value={{...state,getTodos,filterTodos,addTodo,updateTodo,deleteTodo}}>
       {children}
     </TodoContext.Provider>
   );

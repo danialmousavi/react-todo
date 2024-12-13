@@ -22,7 +22,7 @@ const FilterTodos = () => {
             name=""
             id=""
           >
-            <option value="100">All</option>
+            <option value="200">All</option>
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="30">30</option>
